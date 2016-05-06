@@ -6,8 +6,8 @@ import pygame as pg
 from SceneManager import SceneManager
 from GameScene import GameScene
 
-WIDTH = 640
-HEIGHT = 480
+WIDTH = 800
+HEIGHT = 600
 
 class Application:
     def __init__(self):
@@ -31,6 +31,8 @@ class Application:
 
     def events(self):
         self.scene_manager.update_keys(pg.key.get_pressed())
+        self.scene_manager.update_buttons(pg.mouse.get_pressed())
+        self.scene_manager.update_mouse(pg.mouse.get_pos())
         for ev in pg.event.get():
             if ev.type == pg.QUIT:
                 self.stop()

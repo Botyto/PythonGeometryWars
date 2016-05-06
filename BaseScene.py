@@ -1,4 +1,5 @@
 from Painter import Painter
+from Point import Point
 import Colors
 
 class BaseScene:
@@ -10,6 +11,10 @@ class BaseScene:
 
 	def add_object(self, obj):
 		self.objects.append(obj)
+
+
+	def remove_object(self, obj):
+		self.objects.remove(obj)
 
 
 	def update(self):
@@ -42,4 +47,5 @@ class BaseScene:
 
 
 	def mouse_position(self):
-		return self.manager.mouse_position()
+		mp = self.manager.mouse_position()
+		return Point(mp[0], mp[1])

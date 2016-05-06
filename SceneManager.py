@@ -22,7 +22,7 @@ class SceneManager:
 			begin = time.clock()
 			self.scene.update()
 			end = time.clock()
-			print("update :: %f" % (end - begin))
+			print("update :: %fms" % ((end - begin)*1000))
 
 
 	def draw(self):
@@ -30,7 +30,7 @@ class SceneManager:
 			begin = time.clock()
 			self.scene.draw()
 			end = time.clock()
-			print("draw :: %f" % (end - begin))
+			print("draw :: %fms" % ((end - begin)*1000))
 
 
 	def handle_event(self, ev):

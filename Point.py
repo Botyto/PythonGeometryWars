@@ -7,6 +7,11 @@ class Point:
         self.y = y
 
 
+    @classmethod
+    def anglelen(cls, radians, length):
+        return Point(math.cos(radians)*length, math.sin(radians)*length)
+
+
     def length(self):
         return math.sqrt(self.length_sqr())
 
@@ -25,6 +30,14 @@ class Point:
         length = self.length()
         return self/length
 
+
+    def rotate_around(self, anchor, radians):
+        diff = self - anchor
+        sin = math.sin(radians)
+        cos = math.cos(radians)
+        x = diff.x*cos - diff.y*sin
+        y = diff.x*sin + diff.y*cos
+        self += anchor
 
     @property
     def coords(self):

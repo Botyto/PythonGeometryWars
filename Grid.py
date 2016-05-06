@@ -119,7 +119,6 @@ class PhysicsGrid(GameObject):
 
 
     def draw(self):
-        wsize = self.scene_manager.window_size()
         painter = self.painter
         for x in range(0, self._size - 1):
             for y in range(0, self._size - 1):
