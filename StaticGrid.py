@@ -30,4 +30,4 @@ class StaticGrid(GameObject):
 
 
 	def draw(self):
-		self.painter.lines(self._points, Colors.grid)
+		self.painter.lines(self._points, Colors.grid, False, 2)

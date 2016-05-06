@@ -1,3 +1,5 @@
+import math
+
 from Point import Point
 from Painter import Painter
 
@@ -5,6 +7,7 @@ class GameObject:
     def __init__(self, scene):
         self._scene = scene
         self._position = Point(0, 0)
+        self._collision_radius_sqr = 0
 
 
     @property
@@ -38,6 +41,14 @@ class GameObject:
         return Painter(self.scene_manager.drawing_surface())
     
 
+    def collision_radius_sqr(self):
+        return _collision_radius_sqr
+
+
+    def collision_radius(self):
+        return math.sqrt(_collision_radius_sqr)
+
+
     def add_object(self, obj):
         self.scene.add_object(obj)
 
@@ -61,6 +72,10 @@ class GameObject:
 
 
     def draw(self):
+        pass
+
+
+    def collide_with(self, other):
         pass
 
 

@@ -31,6 +31,18 @@ class Point:
         return self/length
 
 
+    def clamp(self, min_x, min_y, max_x, max_y):
+        def clamp(x, a, b):
+            if x < a:
+                return a
+            if x > b:
+                return b
+            return x
+
+        self.x = clamp(self.x, min_x, max_x)
+        self.y = clamp(self.y, min_y, max_y)
+
+
     def rotate_around(self, anchor, radians):
         diff = self - anchor
         sin = math.sin(radians)
