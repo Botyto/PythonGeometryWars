@@ -49,7 +49,7 @@ class ParticleSystem(GameObject):
 
 	def explode(self, position, color, count):
 		for i in range(count*PS_COEF):
-			dd = random.uniform(0, 2*math.PI)
+			dd = random.uniform(0, 2*math.pi)
 			ss = PS_SPEED + random.uniform(0, PS_SPEED_DIFF)
 			self._parts.append(Particle(position, dd, ss, color))
 

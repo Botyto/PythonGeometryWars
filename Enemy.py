@@ -14,10 +14,10 @@ class Enemy(sh.ShapeObject):
 
 	def collide_with(self, other):
 		if isinstance(other, pl.Bullet):
-			self.scene.particle_system.explode(self.position, self.color, 2)
-			destroy()
+			self.scene.particle_system.explode(self.position, self.color, 3)
+			self.destroy()
 		elif isinstance(other, pl.Player):
-			destroy()
+			self.destroy()
 
 DUMB_SPEED = 3
 DUMB_ACCELERATION = 0.5

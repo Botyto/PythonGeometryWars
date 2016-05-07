@@ -42,11 +42,11 @@ class GameObject:
     
 
     def collision_radius_sqr(self):
-        return _collision_radius_sqr
+        return self._collision_radius_sqr
 
 
     def collision_radius(self):
-        return math.sqrt(_collision_radius_sqr)
+        return math.sqrt(self._collision_radius_sqr)
 
 
     def add_object(self, obj):

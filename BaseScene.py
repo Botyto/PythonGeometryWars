@@ -29,6 +29,14 @@ class BaseScene:
         for obj in self.objects:
             obj.update()
 
+        for obj1 in self.objects:
+            for obj2 in self.objects:
+                if obj1 is obj2:
+                    continue
+                r = obj1.collision_radius_sqr() + obj2.collision_radius_sqr()
+                if (obj1.position - obj2.position).length_sqr() <= r:
+                    obj1.collide_with(obj2)
+                    obj2.collide_with(obj1)
 
     def draw(self):
         p = Painter(self.manager.drawing_surface())
