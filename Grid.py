@@ -127,7 +127,7 @@ class PhysicsGrid(GameObject):
                 for y in range(0, self._size - 1, 1):
                     points.append(self._points[x][y].position)
             else:
-                for y in range(self._size - 1, 0, -1):
+                for y in range(self._size - 1, -1, -1):
                     points.append(self._points[x][y].position)
 
         #horizontal
@@ -137,7 +137,7 @@ class PhysicsGrid(GameObject):
                 for x in range(0, self._size - 1, 1):
                     points.append(self._points[x][y].position)
             else:
-                for x in range(self._size - 1, 0, -1):
+                for x in range(self._size - 1, -1, -1):
                     points.append(self._points[x][y].position)
         
         self.painter.lines(points, Colors.grid, False, 2)

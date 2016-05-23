@@ -60,6 +60,7 @@ class ShapeObject(GameObject):
 
 
     def draw(self):
+        super().draw()
         p = self.painter
         p.push(self.__pos_mat)
         p.push(self.__rot_mat)
