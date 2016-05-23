@@ -37,7 +37,7 @@ class Dumb(Enemy):
 		super().update()
 		angl = random.uniform(0, math.pi*2)
 		self._velocity += Point.anglelen(angl, DUMB_ACCELERATION)
-		self._velocity *= DUMB_SPEED/self._velocity.length()
+		self._velocity *= DUMB_SPEED / self._velocity.length()
 		self.position += self._velocity
 		self.direction += DUMB_ANGULAR_SPEED
 
@@ -46,3 +46,17 @@ class Dumb(Enemy):
 			self._velocity.x *= -1
 		if self.position.y < 0 or self.position.y > w[1]:
 			self._velocity.y *= -1
+
+
+FOLLOWER_SPEED = 2
+class Follower(Enemy):
+	def __init__(self, scene, x, y):
+		super().__init__(scene, x, y)
+		angl = random.uniform(0, math.pi*2)
+		self.set_shape(sh.HOURGLASS_SHAPE, Colors.follow, True, 5)
+
+	def update(self):
+		super().update()
+		dirvec = self._scene.player.position - self.position
+		self.position += dirvec * FOLLOWER_SPEED / dirvec.length()
+		self.direction = math.atan2(dirvec.y, dirvec.x)
