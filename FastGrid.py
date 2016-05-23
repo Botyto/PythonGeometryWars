@@ -48,6 +48,30 @@ class FastGrid(GameObject):
 
 
     def draw(self):
+        points = []
+
+        #vertical
+        for x in range(self._size - 1):
+            if x % 2 == 0:
+                for y in range(0, self._size - 1, 1):
+                    points.append(self.point(x, y).position)
+            else:
+                for y in range(self._size - 1, -1, -1):
+                    points.append(self.point(x, y).position)
+
+        #horizontal
+        for yy in range(self._size - 1):
+            y = yy if self._size % 2 == 0 else self._size - 1 - yy
+            if y % 2 == 0:
+                for x in range(0, self._size - 1, 1):
+                    points.append(self.point(x, y).position)
+            else:
+                for x in range(self._size - 1, -1, -1):
+                    points.append(self.point(x, y).position)
+        
+        self.painter.lines(points, Colors.grid, False, 2)
+
+        """
         painter = self.painter
         for x in range(0, self._size - 1):
             for y in range(0, self._size - 1):
@@ -57,3 +81,5 @@ class FastGrid(GameObject):
 
                 painter.line(this.coords, right.coords, Colors.grid)
                 painter.line(this.coords, down.coords,  Colors.grid)
+        """
+
