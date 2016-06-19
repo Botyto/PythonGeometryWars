@@ -35,6 +35,8 @@ class Player(sh.ShapeObject):
 		if self.key_down(pg.K_s):
 			self.position += Point(0, 5)
 
+		super().update()
+
 		if self.button_up(0):
 			self._shoot_timer -= 1
 			if self._shoot_timer <= 0:
@@ -76,10 +78,11 @@ class Bullet(sh.ShapeObject):
 		self.set_shape(sh.BULLET_SHAPE, Colors.bullet, True, 5)
 		self.direction = direction
 		self._velocity = Point.anglelen(direction, BULLET_SPEED)
+		self._clamp_inside = False
 
 	def update(self):
 		if self.is_outside:
-			w = self.scene_manager.window_size()
+			w = self._scene.size
 			d = 0
 			if self.x > w[0]:
 				d = math.pi
@@ -94,6 +97,7 @@ class Bullet(sh.ShapeObject):
 			return
 
 		self.position += self._velocity
+		super().update()
 
 	@property
 	def velocity(self):

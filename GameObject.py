@@ -8,11 +8,12 @@ class GameObject:
         self._scene = scene
         self._position = Point(0, 0)
         self._collision_radius_sqr = 0
+        self._clamp_inside = True
 
 
     @property
     def is_outside(self):
-        w = self.scene_manager.window_size()
+        w = self._scene.size
         return self.x < 0 or self.y < 0 or self.x > w[0]  or self.y > w[1]
     
 
@@ -68,7 +69,12 @@ class GameObject:
     
     
     def update(self):
-        pass
+        def clamp(x, low, high):
+            return max(min(x, high), low)
+
+        if self._clamp_inside:
+            self.position.x = clamp(self.position.x, 0, self.scene.size[0])
+            self.position.y = clamp(self.position.y, 0, self.scene.size[1])
 
 
     def draw(self):

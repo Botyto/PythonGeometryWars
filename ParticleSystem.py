@@ -20,7 +20,7 @@ class Particle:
 		return self.velocity.length_sqr() <= 2
 
 
-PS_COEF = 3
+PS_COEF = 5
 PS_SPEED = 15
 PS_SPEED_DIFF = 10
 PS_DECAY = 0.93

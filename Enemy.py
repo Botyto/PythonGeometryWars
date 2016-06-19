@@ -21,7 +21,6 @@ class Enemy(sh.ShapeObject):
 		elif isinstance(other, pl.Player):
 			self.destroy()
 
-
 DUMB_SPEED = 2
 DUMB_ACCELERATION = 0.1
 DUMB_ANGULAR_SPEED = math.pi/70
@@ -33,7 +32,6 @@ class Dumb(Enemy):
 		self.set_shape(sh.PINWHEEL_SHAPE, Colors.dumb, True, 5)
 
 	def update(self):
-		super().update()
 		angl = random.uniform(0, math.pi*2)
 		self._velocity += Point.anglelen(angl, DUMB_ACCELERATION)
 		self._velocity *= DUMB_SPEED / self._velocity.length()
@@ -46,6 +44,8 @@ class Dumb(Enemy):
 		if self.position.y < 0 or self.position.y > w[1]:
 			self._velocity.y *= -1
 
+		super().update()
+
 
 FOLLOWER_SPEED = 2
 class Follower(Enemy):
@@ -54,10 +54,10 @@ class Follower(Enemy):
 		self.set_shape(sh.HOURGLASS_SHAPE, Colors.follow, True, 5)
 
 	def update(self):
-		super().update()
 		dirvec = self._scene.player.position - self.position
 		self.position += dirvec * FOLLOWER_SPEED / dirvec.length()
 		self.direction = math.atan2(dirvec.y, dirvec.x)
+		super().update()
 
 
 AVOID_SPEED = 3
@@ -113,12 +113,14 @@ class Avoider(Enemy):
 
 		self.position += self._velocity
 		self.direction += DUMB_ANGULAR_SPEED
+		super().update()
+
 
 BRICK_ACCELERATION = 0.3
 BRICK_SPEED = 3
 BRICK_SPEED_SQR = BRICK_SPEED*BRICK_SPEED
 BRICK_MASS = 0.2
-BRICK_SCALE = 7
+BRICK_SCALE = 9
 BRICK_ANGULAR_SPEED = 0.025
 BRICK_SLEEP_TIME = 15
 class Brick(Enemy):
@@ -126,7 +128,7 @@ class Brick(Enemy):
 		super().__init__(scene, x, y)
 		self._velocity = Point(0, 0)
 		self._size = n
-		myscale = BRICK_SCALE + 3 - n
+		myscale = BRICK_SCALE - n*2
 		self.set_shape(sh.BRICK_SHAPE[n], Colors.split, True, myscale)
 		self._sleep = BRICK_SLEEP_TIME if n < 2 else 0
 
@@ -146,7 +148,6 @@ class Brick(Enemy):
 		super().destroy()
 
 	def update(self):
-		super().update()
 		if self._sleep <= 0:
 			player = self._scene.player
 			dirvec = player.position - self.position
@@ -160,3 +161,4 @@ class Brick(Enemy):
 
 		self.position += self._velocity
 		self.direction += self._velocity.length()*BRICK_ANGULAR_SPEED
+		super().update()
