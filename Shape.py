@@ -69,6 +69,7 @@ class ShapeObject(GameObject):
         p.pop()
 
 
+# player ship
 PLAYER_SHAPE = [
     ( 2.5, -1.5),
     (-0.5, -2.5),
@@ -80,12 +81,14 @@ PLAYER_SHAPE = [
     ( 0.5, -1.5),
 ]
 
+# player bullet
 BULLET_SHAPE = [
     ( 1.0,  0.0),
     (-1.0, -0.5),
     (-1.0,  0.5),
 ]
 
+# dumb enemy (wanderer)
 PINWHEEL_SHAPE = [
     (-2.5, -2.5),
     ( 0.0, -2.5),
@@ -104,6 +107,7 @@ PINWHEEL_SHAPE = [
     ( 0.0,  0.0),
 ]
 
+# follower enemy
 HOURGLASS_SHAPE = [
     (-2.5, -2.5),
     ( 2.5,  2.5),
@@ -111,6 +115,7 @@ HOURGLASS_SHAPE = [
     ( 2.5, -2.5),
 ]
 
+# avoiding enemy (dodger)
 STAR_SHAPE = [
     (-2.5, -2.5),
     ( 0.0, -1.0),
@@ -121,3 +126,5 @@ STAR_SHAPE = [
     (-2.5,  2.5),
     (-1.0,  0.0),
 ]
+
+

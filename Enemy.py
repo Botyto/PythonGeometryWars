@@ -70,7 +70,7 @@ class Avoider(Enemy):
 	def __init__(self, scene, x, y):
 		super().__init__(scene, x, y)
 		self._velocity = Point(0, 0)
-		self.set_shape(sh.STAR_SHAPE, Colors.follow, True, 5)
+		self.set_shape(sh.STAR_SHAPE, Colors.avoid, True, 5)
 
 	def _angle_distance(self, alpha, beta):
 		phi = abs(beta - alpha) % 360
