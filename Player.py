@@ -68,13 +68,14 @@ class Player(sh.ShapeObject):
 			self._shoot_timer = 1
 
 
+BULLET_SPEED = 15
 class Bullet(sh.ShapeObject):
 	def __init__(self, scene, x, y, direction):
 		super().__init__(scene)
 		self.position = Point(x, y)
 		self.set_shape(sh.BULLET_SHAPE, Colors.bullet, True, 5)
 		self.direction = direction
-		self._velocity = Point.anglelen(direction, 15)
+		self._velocity = Point.anglelen(direction, BULLET_SPEED)
 
 	def update(self):
 		if self.is_outside:
@@ -93,6 +94,10 @@ class Bullet(sh.ShapeObject):
 			return
 
 		self.position += self._velocity
+
+	@property
+	def velocity(self):
+		return self._velocity
 
 	def collide_with(self, other):
 		if isinstance(other, Enemy):
