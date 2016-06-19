@@ -11,12 +11,14 @@ import Colors
 TRIPLE_SPREAD = math.pi/30
 FULL_COUNT = 10
 
+PLAYER_GUNS = ["light", "triple", "heavy", "full"]
 class Player(sh.ShapeObject):
 	def __init__(self, scene, x, y):
 		super().__init__(scene)
 		self.position = Point(x, y)
 		self.set_shape(sh.PLAYER_SHAPE, Colors.player, True, 5)
-		self.gun = "light"
+		self.gun = 0
+		self.score = 0
 		self._shoot_timer = 0
 
 	def update(self):
@@ -42,30 +44,33 @@ class Player(sh.ShapeObject):
 			if self._shoot_timer <= 0:
 				self.shoot()
 
+		if self.score % 500 == 0:
+			self.gun = (self.gun + 1) % 4
+
 	def shoot(self):
 		def shot(direction):
 			self.add_object(Bullet(self.scene, self.x, self.y, direction))
 
-		if self.gun == "light":
+		if self.gun == 0: #light
 			shot(self.direction)
 			self._shoot_timer = 8
-		elif self.gun == "triple":
+		elif self.gun == 1: #triple
 			shot(self.direction - TRIPLE_SPREAD)
 			shot(self.direction                )
 			shot(self.direction + TRIPLE_SPREAD)
 			self._shoot_timer = 13
-		elif self.gun == "heavy":
+		elif self.gun == 2: #heavy
 			shot(self.direction - TRIPLE_SPREAD*1.0)
 			shot(self.direction - TRIPLE_SPREAD*0.5)
 			shot(self.direction                    )
 			shot(self.direction + TRIPLE_SPREAD*0.5)
 			shot(self.direction + TRIPLE_SPREAD*1.0)
 			self._shoot_timer = 17
-		elif self.gun == "full":
+		elif self.gun == 3: #heavy
 			for i in range(FULL_COUNT):
 				shot(self.direction + i/FULL_COUNT*math.pi*2)
 			self._shoot_timer = 60
-		else:
+		else: #fast single shot fallback
 			shot(self.direction)
 			self._shoot_timer = 1
 
@@ -105,4 +110,5 @@ class Bullet(sh.ShapeObject):
 
 	def collide_with(self, other):
 		if isinstance(other, Enemy):
+			self.scene.player.score += 100
 			self.destroy()
