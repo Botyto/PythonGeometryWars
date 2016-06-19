@@ -19,6 +19,7 @@ class GameScene(BaseScene):
 		self.add_object(en.Dumb(self, 300, 100))
 		self.add_object(en.Follower(self, 300, 600))
 		self.add_object(en.Avoider(self, 500, 600))
+		self.add_object(en.Brick(self, 500, 500))
 
 
 	def update(self):
