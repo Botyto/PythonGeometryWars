@@ -96,6 +96,11 @@ class Painter:
     def clear(self, color):
         self.surface.fill(color)
 
+    def text(self, pos, text, color, size=20):
+    	font = pg.font.SysFont("", size)
+    	surface = font.render(text, True, color)
+    	self.blit(surface, pos)
+
     def blit(self, sprite, pos):
         self.surface.blit(sprite, self._t(pos))
 

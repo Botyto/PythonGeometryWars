@@ -27,6 +27,7 @@ class Application:
             self.update()
             self.draw()
             self.clock.tick(self.target_fps)
+            print("\nfps:" + str(self.clock.get_fps()))
 
     def events(self):
         self.scene_manager.update_keys(pg.key.get_pressed())

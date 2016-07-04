@@ -54,6 +54,11 @@ class Player(sh.ShapeObject):
 
         self._prev_score = self.score
 
+    def draw(self):
+        super().draw()
+        scorestr = "Score: " + str(self.score)
+        self.painter.text((5, 5), scorestr, Colors.white)
+
     def shoot(self):
         def shot(direction):
             self.add_object(Bullet(self.scene, self.x, self.y, direction))
@@ -61,7 +66,7 @@ class Player(sh.ShapeObject):
         # light
         if self.gun == 0:
             shot(self.direction)
-            self._shoot_timer = 8
+            self._shoot_timer = 10
         # triple
         elif self.gun == 1:
             shot(self.direction - TRIPLE_SPREAD)

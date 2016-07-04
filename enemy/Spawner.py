@@ -44,11 +44,11 @@ class Spawner(GameObject):
         self.interval = INTERVALS[level]
 
     def update(self):
-        self.level = self._resolve_level(self.scene.player.score)
+        self.level = self._resolve_level()
         self.interval = INTERVALS[self.level]*TICKS_PER_SEC
-        print(self.timer)
         if self.timer <= 0:
-            self._spawn()
+            for i in range(self._resolve_count()):
+                self._spawn()
             self.timer = self.interval
         else:
             self.timer -= 1
@@ -65,5 +65,11 @@ class Spawner(GameObject):
         enemy_obj = enemy_type(self.scene, x, y)
         self.scene.add_object(enemy_obj)
 
-    def _resolve_level(self, score):
+    def _resolve_count(self):
+        score = self.scene.player.score
+        count = int(self.scene.player.score/1500)
+        return min(count, 2) + 1
+
+    def _resolve_level(self):
+        score = self.scene.player.score
         return min(2, int(score/2000))
