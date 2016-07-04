@@ -1,5 +1,4 @@
-__all__ =
-[
+__all__ = [
     "Avoider",
     "Brick",
     "Dumb",
