@@ -16,12 +16,9 @@ class GameScene(BaseScene):
         self.add_object(self.grid)
         self.player = Player(self, 50, 50)
         self.add_object(self.player)
-
-        self.add_object(Dumb.Dumb(self, 300, 100))
-        self.add_object(Follower.Follower(self, 300, 600))
-        self.add_object(Avoider.Avoider(self, 500, 600))
-        self.add_object(Brick.Brick(self, 500, 500))
-
+        self.spawner = Spawner.Spawner(self)
+        self.add_object(self.spawner)
+        
     def update(self):
         super().update()
 

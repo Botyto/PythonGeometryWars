@@ -22,6 +22,7 @@ class Player(sh.ShapeObject):
         self.set_shape(sh.PLAYER_SHAPE, Colors.player, True, 5)
         self.gun = 0
         self.score = 0
+        self._prev_score = 0
         self._shoot_timer = 0
 
     def update(self):
@@ -47,8 +48,11 @@ class Player(sh.ShapeObject):
             if self._shoot_timer <= 0:
                 self.shoot()
 
-        if self.score % 500 == 0:
+        if (self._prev_score % 500 != 0 and
+            self.score % 500 == 0):
             self.gun = (self.gun + 1) % 4
+
+        self._prev_score = self.score
 
     def shoot(self):
         def shot(direction):
