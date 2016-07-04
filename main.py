@@ -9,6 +9,7 @@ from GameScene import GameScene
 WIDTH = 800
 HEIGHT = 600
 
+
 class Application:
     def __init__(self):
         self._running = False
@@ -19,7 +20,6 @@ class Application:
         self.scene_manager.retarget_drawing(pg.display.get_surface())
         self.scene_manager.begin(GameScene)
 
-
     def run(self):
         self._running = True
         while (self._running):
@@ -27,7 +27,6 @@ class Application:
             self.update()
             self.draw()
             self.clock.tick(self.target_fps)
-
 
     def events(self):
         self.scene_manager.update_keys(pg.key.get_pressed())
@@ -37,18 +36,15 @@ class Application:
             if ev.type == pg.QUIT:
                 self.stop()
 
-
     def update(self):
         if not self.scene_manager.scene:
             self.stop()
             return
         self.scene_manager.update()
 
-
     def draw(self):
         self.scene_manager.draw()
         pg.display.flip()
-        
 
     def stop(self):
         self._running = False

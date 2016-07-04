@@ -2,6 +2,7 @@ from Painter import TransformMatrix as tmat
 from GameObject import GameObject
 import Colors
 
+
 class ShapeObject(GameObject):
     def __init__(self, scene):
         super().__init__(scene)
@@ -12,36 +13,29 @@ class ShapeObject(GameObject):
         self.__pos_mat = tmat.translation(0, 0)
         self.__rot_mat = tmat.rotation(0)
 
-
     @property
     def position(self):
         return self._position
-
 
     @position.setter
     def position(self, value):
         self._position = value
         self.__pos_mat = tmat.translation(value.x, value.y)
 
-
     @property
     def direction(self):
         return self.__direction
 
-
     @property
     def color(self):
         return self.__color
-    
-
 
     @direction.setter
     def direction(self, value):
         self.__direction = value
         self.__rot_mat = tmat.rotation(value)
 
-
-    def set_shape(self, points, color, closed, scale = 1.0):
+    def set_shape(self, points, color, closed, scale=1.0):
         def sqlen(pos):
             return pos[0]**2 + pos[1]**2
 
@@ -58,7 +52,6 @@ class ShapeObject(GameObject):
         self.__color = color
         self.__closed = closed
 
-
     def draw(self):
         super().draw()
         p = self.painter
@@ -67,7 +60,6 @@ class ShapeObject(GameObject):
         p.lines(self.__points, self.__color, self.__closed, self.shape_width)
         p.pop()
         p.pop()
-
 
 # player ship
 PLAYER_SHAPE = [
@@ -127,7 +119,7 @@ STAR_SHAPE = [
     (-1.0,  0.0),
 ]
 
-#full brick enemy
+# full brick enemy
 BRICK8_SHAPE = [
     (-2.5, -2.5),
     (-2.5,  2.5),
@@ -148,10 +140,9 @@ BRICK8_SHAPE = [
     (-2.5, -1.2),
     ( 2.5, -1.2),
     ( 2.5, -2.5),
-    #(-2.5, -2.5),
 ]
 
-#half brick enemy
+# half brick enemy
 BRICK4_SHAPE = [
     (-1.2, -1.2),
     (-1.2,  1.2),
@@ -164,10 +155,9 @@ BRICK4_SHAPE = [
     (-1.2,  0.0),
     ( 1.2,  0.0),
     ( 1.2, -1.2),
-    #(-1.2, -1.2),
 ]
 
-#single brick enemy
+# single brick enemy
 BRICK1_SHAPE = [
     (-0.6, -0.6),
     (-0.6,  0.6),
@@ -175,5 +165,5 @@ BRICK1_SHAPE = [
     ( 0.6, -0.6),
 ]
 
-#all brick enemies
+# all brick enemies
 BRICK_SHAPE = [BRICK1_SHAPE, BRICK4_SHAPE, BRICK8_SHAPE]

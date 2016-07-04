@@ -7,6 +7,7 @@ import Colors
 
 MASS_DAMPING = 0.98
 
+
 class PointMass:
     def __init__(self, x,  y, inverse_mass):
         self.inverse_mass = inverse_mass
@@ -15,13 +16,12 @@ class PointMass:
         self.acceleration = Point(0, 0)
         self.damping = MASS_DAMPING
 
-
     def apply(self, force):
         self.acceleration += force * self.inverse_mass
 
-
     def update(self):
-        if self.acceleration.length_sqr() == 0 and self.velocity.length_sqr() == 0:
+        if (self.acceleration.length_sqr() == 0 and
+            self.velocity.length_sqr() == 0):
             return
 
         self.velocity += self.acceleration
@@ -41,7 +41,6 @@ class Spring:
         self._target = (end1.position - end2.position).length()*0.95
         self.stiffness = stiffness
         self.damping = damping
-
 
     def update(self):
         x = self.end1.position - self.end2.position
@@ -69,7 +68,8 @@ class PhysicsGrid(GameObject):
         for x in range(0, size):
             self._points.append([])
             for y in range(0, size):
-                self._points[x].append(PointMass(x * self._scale, y * self._scale, 1))
+                mass = PointMass(x * self._scale, y * self._scale, 1)
+                self._points[x].append(mass)
 
         for x in range(0, size):
             for y in range(0, size):
@@ -90,7 +90,6 @@ class PhysicsGrid(GameObject):
 
         self.directed(Point(50, 50), 50, Point(20, 0))
 
-
     def directed(self, position, radius, force):
         sqradius = radius**2
         for column in self._points:
@@ -100,14 +99,11 @@ class PhysicsGrid(GameObject):
                     dist = math.sqrt(sqdist)
                     mass.apply(force * (10 / (10 + dist)))
 
-
     def implode(self, position, radius, force):
         pass
 
-
     def explode(self, position, radius, force):
         pass
-
 
     def update(self):
         for spring in self._springs:
@@ -117,11 +113,10 @@ class PhysicsGrid(GameObject):
             for mass in column:
                 mass.update()
 
-
     def draw(self):
         points = []
 
-        #vertical
+        # vertical
         for x in range(self._size - 1):
             if x % 2 == 0:
                 for y in range(0, self._size - 1, 1):
@@ -130,7 +125,7 @@ class PhysicsGrid(GameObject):
                 for y in range(self._size - 1, -1, -1):
                     points.append(self._points[x][y].position)
 
-        #horizontal
+        # horizontal
         for yy in range(self._size - 1):
             y = yy if self._size % 2 == 0 else self._size - 1 - yy
             if y % 2 == 0:
@@ -139,7 +134,7 @@ class PhysicsGrid(GameObject):
             else:
                 for x in range(self._size - 1, -1, -1):
                     points.append(self._points[x][y].position)
-        
+
         self.painter.lines(points, Colors.grid, False, 2)
 
         """

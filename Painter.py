@@ -4,6 +4,7 @@ from numbers import Number
 
 from Point import Point
 
+
 class TransformMatrix:
     def __init__(self):
         self.m = [0 for i in range(9)]
@@ -38,7 +39,7 @@ class TransformMatrix:
         result = cls()
         result.set(0, 0, sx)
         result.set(1, 1, sy)
-        return result        
+        return result
 
     def get(self, x, y):
         return self.m[x + y*3]
@@ -64,7 +65,7 @@ class TransformMatrix:
                     s = 0
                     for i in range(3):
                         s += self.get(i, y)*value.get(x, i)
-                    result.set(x, y, s) 
+                    result.set(x, y, s)
 
         elif isinstance(value, Number):
             result.m = [x*value for x in self.m]
@@ -73,19 +74,17 @@ class TransformMatrix:
 
         return result
 
+
 class Painter:
     def __init__(self, surface):
         self.surface = surface
         self.stack = [TransformMatrix.identity()]
 
-
     def push(self, matrix):
         self.stack.append(self.stack[-1] * matrix)
 
-
     def pop(self):
         self.stack.pop()
-
 
     def _t(self, point):
         if isinstance(point, Point):
@@ -94,48 +93,37 @@ class Painter:
             temp = Point(point[0], point[1])
             return (self.stack[-1]*temp).coords
 
-
     def clear(self, color):
         self.surface.fill(color)
-
 
     def blit(self, sprite, pos):
         self.surface.blit(sprite, self._t(pos))
 
-
     def fill_rect(self, rectangle, color):
         rect(rectangle, color, 0)
 
-
-    def rect(self, rectangle, color, width = 1):
+    def rect(self, rectangle, color, width=1):
         pg.draw.rect(self.surface, color, rectangle, width)
-
 
     def fill_circle(self, center, radius, color):
         circle(center, radius, color, 0)
 
-
-    def circle(self, center, radius, color, width = 1):
+    def circle(self, center, radius, color, width=1):
         pg.draw.circle(self.surface, color, self._t(center), radius, width)
 
-
-    def rline(self, begin, end, color, width = 1):
+    def rline(self, begin, end, color, width=1):
         pg.draw.line(self.surface, color, self._t(begin), self._t(end), width)
 
-
-    def rlines(self, points, color, closed = False, width = 1):
+    def rlines(self, points, color, closed=False, width=1):
         pg.draw.lines(self.surface, color, closed, points, width)
 
-
-    def aaline(self, begin, end, color, width = 1):
+    def aaline(self, begin, end, color, width=1):
         pg.draw.aaline(self.surface, color, self._t(begin), self._t(end), 1)
 
-
-    def aalines(self, points, color, closed = False, width = 1):
+    def aalines(self, points, color, closed=False, width=1):
         pg.draw.aalines(self.surface, color, closed, points, 1)
 
-
-    def lines(self, points, color, closed = False, width = 1):
+    def lines(self, points, color, closed=False, width=1):
         self._lines([self._t(pt) for pt in points], color, closed, width)
 
     line = rline
