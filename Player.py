@@ -2,8 +2,9 @@ import math
 import pygame as pg
 
 from Painter import TransformMatrix as tmat
+from GameOverScene import GameOverScene
 from GameObject import GameObject
-from enemy import Enemy
+from enemy.Enemy import Enemy
 from Point import Point
 import Shape as sh
 import Colors
@@ -22,6 +23,7 @@ class Player(sh.ShapeObject):
         self.set_shape(sh.PLAYER_SHAPE, Colors.player, True, 5)
         self.gun = 0
         self.score = 0
+        self.lives = 5
         self._prev_score = 0
         self._shoot_timer = 0
 
@@ -48,47 +50,87 @@ class Player(sh.ShapeObject):
             if self._shoot_timer <= 0:
                 self.shoot()
 
-        if (self._prev_score % 500 != 0 and
-            self.score % 500 == 0):
-            self.gun = (self.gun + 1) % 4
-
+        self.try_change_gun()
+        self.try_gain_lives()
         self._prev_score = self.score
 
     def draw(self):
         super().draw()
-        scorestr = "Score: " + str(self.score)
-        self.painter.text((5, 5), scorestr, Colors.white)
+
+        def write(row, title, content):
+            text = title + ": " + str(content)
+            self.painter.text((5, 5 + row*20), text, Colors.white)            
+
+        write(0, "Score", self.score)
+        write(1, "Lives", "<3 "*self.lives)
+
+        write(3, "Gun", PLAYER_GUNS[self.gun])
+        write(4, "Difficulty", self.scene.spawner.level + 1)
+
+    def collide_with(self, other):
+        if isinstance(other, Enemy):
+            print("---- DEATH (lives: %s) ----" % self.lives)
+
+            self.lives -= 1
+            if self.lives == 0:
+                scene_man = self.scene.manager
+                scene_man.begin(GameOverScene)
+                scene_man.scene.set_score(self.score)
+
+            to_destroy = []
+            for obj in self.scene.objects:
+                if isinstance(obj, (Enemy,Bullet)):
+                    to_destroy.append(obj)
+
+            for obj in to_destroy:
+                obj.destroy()
+
+            self.scene.particle_system.explode(self.position, Colors.white, 10)
+            self.position.coords = self.scene.size
+            self.position /= 2
+            self.scene.spawner.timer = 60*3
+
+    def try_gain_lives(self):
+        if (self._prev_score % 10000 != 0 and
+            self.score % 10000 == 0):
+            self.lives += 1
+
+    def try_change_gun(self):
+        step = [500, 1500, 5000][self.scene.spawner.level]
+        if (self._prev_score % step != 0 and
+            self.score % step == 0):
+            self.gun = (self.gun + 1) % 4
 
     def shoot(self):
-        def shot(direction):
+        def boom(direction):
             self.add_object(Bullet(self.scene, self.x, self.y, direction))
 
         # light
         if self.gun == 0:
-            shot(self.direction)
+            boom(self.direction)
             self._shoot_timer = 10
         # triple
         elif self.gun == 1:
-            shot(self.direction - TRIPLE_SPREAD)
-            shot(self.direction                )
-            shot(self.direction + TRIPLE_SPREAD)
-            self._shoot_timer = 13
+            boom(self.direction - TRIPLE_SPREAD)
+            boom(self.direction                )
+            boom(self.direction + TRIPLE_SPREAD)
+            self._shoot_timer = 18
         # heavy
         elif self.gun == 2:
-            shot(self.direction - TRIPLE_SPREAD*1.0)
-            shot(self.direction - TRIPLE_SPREAD*0.5)
-            shot(self.direction                    )
-            shot(self.direction + TRIPLE_SPREAD*0.5)
-            shot(self.direction + TRIPLE_SPREAD*1.0)
-            self._shoot_timer = 17
-        # heavy
+            boom(self.direction - TRIPLE_SPREAD*1.0)
+            boom(self.direction - TRIPLE_SPREAD*0.5)
+            boom(self.direction                    )
+            boom(self.direction + TRIPLE_SPREAD*0.5)
+            boom(self.direction + TRIPLE_SPREAD*1.0)
+            self._shoot_timer = 28
+        # full
         elif self.gun == 3:
             for i in range(FULL_COUNT):
-                shot(self.direction + i/FULL_COUNT*math.pi*2)
+                boom(self.direction + i/FULL_COUNT*math.pi*2)
             self._shoot_timer = 60
         # fast single shot fallback
         else:
-            shot(self.direction)
+            boom(self.direction)
             self._shoot_timer = 1
 
 
@@ -125,6 +167,7 @@ class Bullet(sh.ShapeObject):
         return self._velocity
 
     def collide_with(self, other):
-        if isinstance(other, Enemy.Enemy):
+        if isinstance(other, Enemy):
+            self.scene.particle_system.explode(self.position, Colors.bullet, 1)
             self.scene.player.score += 100
             self.destroy()

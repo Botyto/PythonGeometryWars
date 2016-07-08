@@ -12,5 +12,3 @@ class Enemy(sh.ShapeObject):
         if isinstance(other, pl.Bullet):
             self.scene.particle_system.explode(self.position, self.color, 3)
             self.destroy()
-        elif isinstance(other, pl.Player):
-            self.destroy()

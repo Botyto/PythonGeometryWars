@@ -14,6 +14,10 @@ class SceneManager:
         self._window_size = (640, 480)
 
     def begin(self, sceneType):
+        if self.scene:
+            del self.scene
+
+        print("Beginning scene: " + sceneType.__name__)
         self.scene = sceneType(self)
 
     def update(self):

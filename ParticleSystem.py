@@ -4,7 +4,7 @@ import random
 from Point import Point
 from GameObject import GameObject
 
-PS_COEF = 5
+PS_COEF = 20
 PS_SPEED = 15
 PS_SPEED_DIFF = 10
 PS_DECAY = 0.93

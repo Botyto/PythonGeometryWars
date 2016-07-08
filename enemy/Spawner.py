@@ -7,6 +7,8 @@ from enemy import Avoider
 from enemy import Brick
 from Point import Point
 
+MAX_BRICKS = 1
+
 ENEMIES = [
     # level 1
     [
@@ -30,9 +32,9 @@ ENEMIES = [
 
 TICKS_PER_SEC = 60
 INTERVALS = [
-    4,
-    2,
-    1,
+    2.0,
+    1.5,
+    1.3,
 ]
 
 
@@ -62,6 +64,18 @@ class Spawner(GameObject):
 
         enemy_set = ENEMIES[self.level]
         enemy_type = random.choice(enemy_set)
+
+        # avoid LAGGGG
+        if enemy_type == Brick.Brick:
+            bricks = 0
+            for obj in self.scene.objects:
+                if isinstance(obj, Brick.Brick):
+                    bricks += 1
+            if bricks >= MAX_BRICKS:
+                rest = enemy_set[:]
+                rest.remove(Brick.Brick)
+                enemy_type = random.choice(rest)
+
         enemy_obj = enemy_type(self.scene, x, y)
         self.scene.add_object(enemy_obj)
 

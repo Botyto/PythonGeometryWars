@@ -14,7 +14,9 @@ class GameScene(BaseScene):
         super().__init__(manager)
         self.grid = StaticGrid(self, 30, 40)
         self.add_object(self.grid)
-        self.player = Player(self, 50, 50)
+        self.player = Player(self, 0, 0)
+        self.player.position.coords = self.size
+        self.player.position /= 2
         self.add_object(self.player)
         self.spawner = Spawner.Spawner(self)
         self.add_object(self.spawner)

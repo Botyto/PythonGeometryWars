@@ -8,7 +8,7 @@ class BaseScene:
     def __init__(self, manager):
         self.manager = manager
         self.objects = []
-        self.size = (1000, 1000)
+        self.size = (800, 600)
         self._ps = ParticleSystem(self)
         self.objects.append(self._ps)
 
@@ -22,14 +22,27 @@ class BaseScene:
     def remove_object(self, obj):
         self.objects.remove(obj)
 
+    def clear(self):
+        del self.objects[:]
+
     def update(self):
         for obj in self.objects:
             obj.update()
 
         for obj1 in self.objects:
+            if not obj1 in self.objects:
+                    continue
+
             for obj2 in self.objects:
                 if obj1 is obj2:
                     continue
+
+                if not obj1 in self.objects:
+                    continue
+
+                if not obj2 in self.objects:
+                    continue
+
                 r = obj1.collision_radius_sqr() + obj2.collision_radius_sqr()
                 if (obj1.position - obj2.position).length_sqr() <= r:
                     obj1.collide_with(obj2)
